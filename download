@@ -1,5 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
+if [ ! -d "libs" ]; then
+    mkdir libs
+fi
 
 SOURCE="https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc"
 # Use the source below if you feel slow, or change it on your own.
