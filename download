@@ -1,0 +1,71 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+
+SOURCE="https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc"
+# Use the source below if you feel slow, or change it on your own.
+# SOURCE="http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/"
+
+LIBC_PREFIX="libc6_"
+LIBC_DBG_PREFIX="libc6-dbg_"
+
+die() {
+  echo >&2 $1
+  exit 1
+}
+
+usage() {
+  echo >&2 "Usage: $0 id"
+  exit 2
+}
+
+download_single() {
+  local id=$1
+  echo "Getting $id"
+  if [ -d "libs/$id" ]; then
+    die "  --> Downloaded before. Remove it to download again."
+  fi
+
+  # download binary package
+  local url="$SOURCE/$LIBC_PREFIX$id.deb"
+  echo "  -> Location: $url"
+  local tmp=`mktemp -d`
+  echo "  -> Downloading libc binary package"
+  wget "$url" 2>/dev/null -O $tmp/pkg.deb || die "Failed to download package from $url"
+  echo "  -> Extracting libc binary package"
+
+  pushd $tmp 1>/dev/null
+  ar x pkg.deb || die "ar failed"
+  tar xf data.tar.* || die "tar failed"
+  popd 1>/dev/null
+
+  mkdir libs/$id
+  cp $tmp/lib/*/* libs/$id 2>/dev/null || cp $tmp/lib32/* libs/$id 2>/dev/null \
+    || die "Failed to save. Check it manually $tmp"
+  echo "  -> Package saved to libs/$id"
+
+  rm -rf $tmp
+  # download debug info package
+  local url="$SOURCE/$LIBC_DBG_PREFIX$id.deb"
+  echo "  -> Location: $url"
+  local tmp=`mktemp -d`
+  echo "  -> Downloading libc debug package"
+  wget "$url" 2>/dev/null -O $tmp/pkg.deb || die "Failed to download package from $url"
+  echo "  -> Extracting libc debug package"
+
+  pushd $tmp 1>/dev/null
+  ar x pkg.deb || die "ar failed"
+  tar xf data.tar.* || die "tar failed"
+  popd 1>/dev/null
+
+  mkdir libs/$id/dbg
+  cp $tmp/usr/lib/debug/lib/*/* libs/$id/dbg 2>/dev/null || cp $tmp/usr/lib/debug/lib32/* libs/$id/dbg 2>/dev/null \
+    || die "Failed to save. Check it manually $tmp"
+  echo "  -> Package saved to libs/$id/dbg"
+
+  rm -rf $tmp
+}
+
+if [[ $# != 1 ]]; then
+  usage
+fi
+download_single "$1"
