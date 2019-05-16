@@ -45,7 +45,7 @@ Getting 2.23-0ubuntu10_i386
   -> Extracting libc debug package
   -> Package saved to libs/2.23-0ubuntu10_i386/dbg
 ➜  glibc-all-in-one ls libs/2.23-0ubuntu10_i386
-dbg  ld-2.23.so  libc-2.23.so  libpthread.so.0   ......
-➜  glibc-all-in-one ls libs/2.23-0ubuntu10_i386/dbg
+. .. .debug  ld-2.23.so  libc-2.23.so  libpthread.so.0   ......
+➜  glibc-all-in-one ls libs/2.23-0ubuntu10_i386/.debug
 ld-2.23.so  libc-2.23.so   ......
 ```

@@ -60,10 +60,10 @@ download_single() {
   tar xf data.tar.* || die "tar failed"
   popd 1>/dev/null
 
-  mkdir libs/$id/dbg
-  cp $tmp/usr/lib/debug/lib/*/* libs/$id/dbg 2>/dev/null || cp $tmp/usr/lib/debug/lib32/* libs/$id/dbg 2>/dev/null \
+  mkdir libs/$id/.debug
+  cp $tmp/usr/lib/debug/lib/*/* libs/$id/.debug 2>/dev/null || cp $tmp/usr/lib/debug/lib32/* libs/$id/.debug 2>/dev/null \
     || die "Failed to save. Check it manually $tmp"
-  echo "  -> Package saved to libs/$id/dbg"
+  echo "  -> Package saved to libs/$id/.debug"
 
   rm -rf $tmp
 }
