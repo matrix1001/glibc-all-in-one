@@ -6,10 +6,13 @@ __feature__
 
 - download glibc binary
 - download glibc debug file
+- extract custom glibc
 
 __note__
 
-currently support ubuntu official glibc 2.23/2.27/2.28/2.29 .
+full support for ubuntu official glibc 2.23/2.27/2.28/2.29 .
+
+for other glibc, you need to download them on your own.
 
 # usage
 
@@ -49,3 +52,16 @@ Getting 2.23-0ubuntu10_i386
 ➜  glibc-all-in-one ls libs/2.23-0ubuntu10_i386/.debug
 ld-2.23.so  libc-2.23.so   ......
 ```
+
+needed glibc not in my list ?
+
+you can download the debs on your own, then use `extract`.
+
+you can find ubuntu glibc from `2.19` to `2.26` in `http://old-releases.ubuntu.com/ubuntu/pool/main/g/glibc/`.
+
+```sh
+./extract ~/libc6_2.26-0ubuntu2_i386.deb /tmp/test
+./extract -d ~/libc6-dbg_2.26-0ubuntu2_i386.deb /tmp/test_dbg
+```
+
+**must** use `-d` for dbg.deb.

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+die() {
+  echo >&2 $1
+  exit 1
+}
+
+usage() {
+  echo -e >&2 "Usage: $0 [-d] deb output\nuse -d for dbg.deb"
+  exit 2
+}
+
+extract_glibc() {
+    local deb=$1
+    local out=$2
+    local tmp=`mktemp -d`
+    cp $deb $tmp/pkg.deb
+    pushd $tmp 1>/dev/null
+    ar x pkg.deb || die "ar failed"
+    tar xf data.tar.* || die "tar failed"
+    popd 1>/dev/null
+    
+    cp $tmp/lib/*/* $out 2>/dev/null || cp $tmp/lib32/* $out 2>/dev/null \
+      || die "Failed to save. Check it manually $tmp"
+    
+    rm -rf $tmp
+}
+
+extract_libcdbg(){
+    local deb=$1
+    local out=$2
+    local tmp=`mktemp -d`
+    cp $deb $tmp/pkg.deb
+    pushd $tmp 1>/dev/null
+    ar x pkg.deb || die "ar failed"
+    tar xf data.tar.* || die "tar failed"
+    popd 1>/dev/null
+    
+    cp $tmp/usr/lib/debug/lib/*/* $out 2>/dev/null || cp $tmp/usr/lib/debug/lib32/* $out 2>/dev/null \
+      || die "Failed to save. Check it manually $tmp"
+    
+    rm -rf $tmp
+}
+
+if [[ $# -lt 2 ]]; then
+    usage
+fi
+
+if [[ $1 = '-d' ]]; then
+    extract_libcdbg "$2" "$3"
+else
+    extract_glibc "$1" "$2"
+fi
+
+
