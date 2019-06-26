@@ -1,21 +1,18 @@
 # glibc-all-in-one
 
-this repo helps you to download & debug glibc easily.
+this repo helps you to download & debug & complie glibc easily.
 
 __feature__
 
 - download glibc binary
 - download glibc debug file
 - extract custom glibc
+- download & complie glibc source code
 
-__note__
-
-full support for ubuntu official glibc 2.23/2.27/2.28/2.29 .
-
-for other glibc, you need to download them on your own.
 
 # usage
 
+## download
 check supported packages.
 
 ```
@@ -62,4 +59,16 @@ you can find ubuntu glibc from `2.19` to `2.26` in `http://old-releases.ubuntu.c
 ```sh
 ./extract ~/libc6_2.26-0ubuntu2_i386.deb /tmp/test
 ./extract ~/libc6-dbg_2.26-0ubuntu2_i386.deb /tmp/test_dbg
+```
+
+## compile
+
+supported version: 2.19, 2.23-2.29
+
+supported arch: i686, amd64
+
+__note__: you may fail to build older version of glibc. ( not my problem ) . my friend says that ubuntu 16.04 is perfect to build all of them.
+
+```sh
+./build 2.29 i686
 ```

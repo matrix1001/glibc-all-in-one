@@ -1,0 +1,118 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+
+SOURCE="http://mirrors.ustc.edu.cn/gnu/libc"
+GLIBC_DIR="/glibc"
+
+
+
+if [ ! -d "srcs" ]; then
+    mkdir srcs
+fi
+
+if [ ! -d $GLIBC_DIR ]; then
+    mkdir $GLIBC_DIR
+fi
+
+
+
+die() {
+  echo >&2 $1
+  exit 1
+}
+
+usage() {
+  echo -e >&2 "Usage: $0 version arch\nSupported version:2.19, 2.23-2.29\nSupported arch: i686, amd64"
+  exit 2
+}
+
+download(){
+    local filename=$1
+    if [ ! -f srcs/$filename ]; then
+        wget "$SOURCE/$filename" -O "srcs/$filename"
+    else
+        echo "[?] srcs/$filename already exists. remove it to re-download. continue ? (y/[n])"
+        read opt
+        if [ "$opt" = "y" ] || [ "$opt" = "Y" ]; then
+            :
+        else
+            die "[*] check src/$filename manually"
+        fi
+    fi
+}
+
+extract(){
+    local filepath=$1
+    local output_dir=$2
+    if [ ! -f $filepath ]; then
+        die "[-] Invalid filepath: $filepath"
+    fi
+    if [ ! -d $output_dir ]; then
+        echo "[*] Making directory $output_dir"
+        mkdir -p $output_dir
+        cp $filepath $output_dir/src.tar.gz
+        pushd $output_dir 1>/dev/null
+        tar xf src.tar.gz
+        mv */* ./
+        rm src.tar.gz
+        popd 1>/dev/null
+    else
+        echo "[?] Seems that source code exists in $output_dir. continue ? (y/[n])"
+        read opt
+        if [ "$opt" = "y" ] || [ "$opt" = "Y" ]; then
+            :
+        else
+            die "[*] check $output_dir manually"
+        fi
+    fi
+}
+
+build(){
+    local arch=$1
+    local src_dir=$2
+    local output_dir=$3
+    if [ ! -d $src_dir ]; then
+        die "[-] Invalid src_dir: $src_dir"
+    fi
+    if [ ! -d $output_dir ]; then
+        echo "[*] Making directory $output_dir"
+        mkdir -p $output_dir
+    fi
+    pushd $src_dir 1>/dev/null
+    mkdir build
+    cd build
+    if [ $arch = 'amd64' ]; then
+        ../configure --prefix=$output_dir --disable-werror --enable-debug=yes
+    elif [ $arch = 'i686' ]; then
+        ../configure --prefix=$output_dir --disable-werror --enable-debug=yes --host=i686-linux-gnu --build=i686-linux-gnu CC="gcc -m32" CXX="g++ -m32" 
+    else
+        die "[-] Invalid arch: $arch"
+    fi
+    make
+    make install
+    cd ../
+    rm -rf build
+    popd 1>/dev/null
+}
+
+
+if [[ $# != 2 ]]; then
+  usage
+fi
+
+echo "[*] checking requirements"
+apt-get install gawk bison gcc-multilib g++-multilib -y
+
+GLIBC_VERSION=$1
+ARCH=$2
+
+SRC="glibc-$GLIBC_VERSION.tar.gz"
+
+echo "[*] downloading $SRC"
+download $SRC
+SRC_DIR=$GLIBC_DIR/$GLIBC_VERSION/source
+echo "[*] extracting to $SRC_DIR"
+extract "srcs/$SRC" $SRC_DIR
+echo "[*] building..."
+build $ARCH $SRC_DIR $GLIBC_DIR/$GLIBC_VERSION/$ARCH/
+echo "[+] build finished. check $GLIBC_DIR/$GLIBC_VERSION/$ARCH/"
