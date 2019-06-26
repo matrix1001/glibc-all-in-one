@@ -61,7 +61,5 @@ you can find ubuntu glibc from `2.19` to `2.26` in `http://old-releases.ubuntu.c
 
 ```sh
 ./extract ~/libc6_2.26-0ubuntu2_i386.deb /tmp/test
-./extract -d ~/libc6-dbg_2.26-0ubuntu2_i386.deb /tmp/test_dbg
+./extract ~/libc6-dbg_2.26-0ubuntu2_i386.deb /tmp/test_dbg
 ```
-
-**must** use `-d` for dbg.deb.

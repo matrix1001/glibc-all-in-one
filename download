@@ -53,7 +53,7 @@ download_single() {
   echo "  -> Extracting libc debug package"
 
   mkdir libs/$id/.debug
-  ./extract -d debs/$dbg_name libs/$id/.debug
+  ./extract debs/$dbg_name libs/$id/.debug
   echo "  -> Package saved to libs/$id/.debug"
 }
 
