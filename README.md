@@ -69,6 +69,8 @@ supported arch: i686, amd64
 
 __note__: you may fail to build older version of glibc. ( not my problem ) . my friend says that ubuntu 16.04 is perfect to build all of them.
 
+__note__: change the `GLIBC_DIR` in the `build`, if you don't want to build them on `/glibc`.
+
 ```sh
 ./build 2.29 i686
 ```
