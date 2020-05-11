@@ -9,7 +9,7 @@ old_url = 'http://old-releases.ubuntu.com/ubuntu/pool/main/g/glibc/'
 
 def get_list(url, arch):
     content = requests.get(url).content
-    return re.findall('libc6_(2\.[0-9][0-9]-[0-9]ubuntu[0-9\.]*_{}.deb)'.format(arch), content)
+    return re.findall('libc6_(2\.[0-9][0-9]-[0-9]ubuntu[0-9\.]*_{}).deb'.format(arch), content)
 
 
 common_list = get_list(common_url, 'amd64')
