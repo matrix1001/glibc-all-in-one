@@ -13,7 +13,7 @@ __feature__
 # usage
 
 ## download
-check supported packages.
+check supported packages. remember to run `update_list` at first.
 
 ```
 ➜  glibc-all-in-one ./update_list
