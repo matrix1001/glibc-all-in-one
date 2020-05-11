@@ -16,6 +16,10 @@ __feature__
 check supported packages.
 
 ```
+➜  glibc-all-in-one ./update_list
+[+] Common list has been save to "list"
+[+] Old-release list has been save to "old_list"
+
 ➜  glibc-all-in-one cat list
 2.23-0ubuntu10_amd64
 2.23-0ubuntu10_i386
@@ -27,11 +31,25 @@ check supported packages.
 2.27-3ubuntu1_i386
 2.28-0ubuntu1_amd64
 2.28-0ubuntu1_i386
-2.29-0ubuntu2_amd64
-2.29-0ubuntu2_i386
+......
+
+➜  glibc-all-in-one cat old_list
+2.21-0ubuntu4.3_amd64
+2.21-0ubuntu4.3_amd64
+2.21-0ubuntu4_amd64
+2.21-0ubuntu4_amd64
+2.24-3ubuntu1_amd64
+2.24-3ubuntu1_amd64
+2.24-3ubuntu2.2_amd64
+2.24-3ubuntu2.2_amd64
+2.24-9ubuntu2.2_amd64
+2.24-9ubuntu2.2_amd64
+......
 ```
 
-download.
+download. 
+
+__Note__: use `download` for packages in the `list`; use `download_old` for packages in the `old_list`.
 
 ```
 ➜  glibc-all-in-one ./download 2.23-0ubuntu10_i386
@@ -50,11 +68,14 @@ Getting 2.23-0ubuntu10_i386
 ld-2.23.so  libc-2.23.so   ......
 ```
 
+```
+➜  glibc-all-in-one ./download_old 2.24-3ubuntu2.2_amd64
+......
+```
+
 needed glibc not in my list ?
 
 you can download the debs on your own, then use `extract`.
-
-you can find ubuntu glibc from `2.19` to `2.26` in `http://old-releases.ubuntu.com/ubuntu/pool/main/g/glibc/`.
 
 ```sh
 ./extract ~/libc6_2.26-0ubuntu2_i386.deb /tmp/test

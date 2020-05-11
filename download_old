@@ -1,0 +1,61 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+if [ ! -d "libs" ]; then
+    mkdir libs
+fi
+
+if [ ! -d "debs" ];  then
+    mkdir debs
+fi
+
+SOURCE="http://old-releases.ubuntu.com/ubuntu/pool/main/g/glibc"
+
+LIBC_PREFIX="libc6_"
+LIBC_DBG_PREFIX="libc6-dbg_"
+
+die() {
+  echo >&2 $1
+  exit 1
+}
+
+usage() {
+  echo >&2 "Usage: $0 id"
+  exit 2
+}
+
+download_single() {
+  local id=$1
+  local deb_name=$LIBC_PREFIX$id.deb
+  local dbg_name=$LIBC_DBG_PREFIX$id.deb
+  echo "Getting $id"
+  if [ -d "libs/$id" ]; then
+    die "  --> Downloaded before. Remove it to download again."
+  fi
+
+  # download binary package
+  local url="$SOURCE/$deb_name"
+  echo "  -> Location: $url"
+  echo "  -> Downloading libc binary package"
+  wget "$url" 2>/dev/null -O debs/$deb_name || die "Failed to download package from $url"
+  echo "  -> Extracting libc binary package"
+
+  mkdir libs/$id
+  ./extract debs/$deb_name libs/$id
+  echo "  -> Package saved to libs/$id"
+
+  # download debug info package
+  local url="$SOURCE/$dbg_name"
+  echo "  -> Location: $url"
+  echo "  -> Downloading libc debug package"
+  wget "$url" 2>/dev/null -O debs/$dbg_name || die "Failed to download package from $url"
+  echo "  -> Extracting libc debug package"
+
+  mkdir libs/$id/.debug
+  ./extract debs/$dbg_name libs/$id/.debug
+  echo "  -> Package saved to libs/$id/.debug"
+}
+
+if [[ $# != 1 ]]; then
+  usage
+fi
+download_single "$1"
