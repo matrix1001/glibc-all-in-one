@@ -16,7 +16,7 @@ common_list = get_list(common_url, 'amd64')
 common_list += get_list(common_url, 'i386')
 
 with open('list', 'w') as f:
-    for l in common_list:
+    for l in sorted(set(common_list)):
         f.write(l + '\n')
 
 print('[+] Common list has been save to "list"')
@@ -25,7 +25,7 @@ old_list = get_list(old_url, 'amd64')
 old_list += get_list(old_url, 'i386')
 
 with open('old_list', 'w') as f:
-    for l in old_list:
+    for l in sorted(set(old_list)):
         f.write(l + '\n')
 
 print('[+] Old-release list has been save to "old_list"')
