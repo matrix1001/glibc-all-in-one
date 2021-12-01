@@ -12,18 +12,22 @@ usage() {
 }
 
 extract() {
-    local deb=$1
+    local deb=`readlink -f $1`
     local out=$2
     if [ ! -d "$out" ]; then
         mkdir $out
     fi
     local tmp=`mktemp -d`
-    dpkg -x $deb $tmp || die "dpkg failed"
+
+    cd $tmp
+    ar xv $deb || die "ar failed"
+    tar xf data.tar.* || die "tar failed"
+    cd -
 
     cp -rP $tmp/lib/*/* $out 2>/dev/null || cp -rP $tmp/lib32/* $out 2>/dev/null \
       || cp -rP $tmp/usr/lib/debug/lib/*/* $out 2>/dev/null || cp -rP $tmp/usr/lib/debug/lib32/* $out 2>/dev/null \
       || die "Failed to save. Check it manually $tmp"
-    
+
     rm -rf $tmp
 }
 
