@@ -21,7 +21,11 @@ extract() {
 
     cd $tmp
     ar xv $deb || die "ar failed"
-    tar xf data.tar.* || die "tar failed"
+    if [ -f "data.tar.zst" ];then
+        tar -I zstd -xf data.tar.* || die "tar failed"
+    else
+        tar xf data.tar.* || die "tar failed"
+    fi
     cd -
 
     cp -rP $tmp/lib/*/* $out 2>/dev/null || cp -rP $tmp/lib32/* $out 2>/dev/null \
