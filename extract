@@ -28,9 +28,11 @@ extract() {
     fi
     cd -
 
-    cp -rP $tmp/lib/*/* $out 2>/dev/null || cp -rP $tmp/lib32/* $out 2>/dev/null \
-      || cp -rP $tmp/usr/lib/debug/lib/*/* $out 2>/dev/null || cp -rP $tmp/usr/lib/debug/lib32/* $out 2>/dev/null \
-      || cp -rP $tmp/usr/lib/debug/.build-id/* /usr/lib/debug/.build-id/ 2>/dev/null \
+    cp -rP $tmp/lib/*/* $out 2>/dev/null \
+      || cp -rP $tmp/lib32/* $out 2>/dev/null \
+      || cp -rP $tmp/usr/lib/debug/lib/*/* $out 2>/dev/null \
+      || cp -rP $tmp/usr/lib/debug/lib32/* $out 2>/dev/null \
+      || cp -rP $tmp/usr/lib/debug/.build-id $out 2>/dev/null \
       || die "Failed to save. Check it manually $tmp"
 
     rm -rf $tmp
