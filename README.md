@@ -49,7 +49,7 @@ check supported packages. remember to run `update_list` at first.
 
 download. 
 
-__Note__: use `download` for packages in the `list`; use `download_old` for packages in the `old_list`.
+__Note__: use `download` for packages in the `list`; use `download_old` for packages in the `old_list`. Because symbol files will be copied to the `.build-id` directory of the system, root privileges are required every time you run `./download`.
 
 ```
 ➜  glibc-all-in-one ./download 2.23-0ubuntu10_i386
@@ -94,4 +94,23 @@ __note__: change the `GLIBC_DIR` in the `build`, if you don't want to build them
 
 ```sh
 ./build 2.29 i686
+```
+
+## Symbolic debugging of higher versions of glibc
+
+If your environment is ubuntu16 or 18, then the default GDB version is lower (GDB < 8.3) and does not support parsing the symbol files in `.build-id.` In this case, you need to upgrade the GDB version.
+
+Version 9.2 is recommended, use the following methods to complete the upgrade
+
+```
+wegt http://ftp.gnu.org/gnu/gdb/gdb-9.2.tar.gz
+tar -xzvf  gdb-9.2.tar.gz 
+cd gdb-9.2 && mkdir build && cd build
+../configure --with-python=`which python3`
+make -j8
+cp /usr/bin/gdb /usr/bin/gdb-old
+cp -rf ~/gdb-9.2/build/gdb/gdb /usr/bin/gdb
+gdb (run gdb command "show data-directory")  -> "data-directory"  # Run GDB, type the "show data-directory" command to get a data-directory path, my default here is "/usr/share/gdb"
+rm -rf $(data-directory)/python/gdb/*
+cp -rf ~/gdb-9.2/gdb/python/lib/gdb/* $(data-directory)/python/gdb/
 ```
