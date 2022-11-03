@@ -103,14 +103,12 @@ If your environment is ubuntu16 or 18, then the default GDB version is lower (GD
 Version 9.2 is recommended, use the following methods to complete the upgrade
 
 ```
+apt install texinfo
+cp `which gdb` `which gdb`-old
+cp `which gdbserver` `which gdbserver`-old
 wegt http://ftp.gnu.org/gnu/gdb/gdb-9.2.tar.gz
 tar -xzvf  gdb-9.2.tar.gz 
 cd gdb-9.2 && mkdir build && cd build
-../configure --with-python=`which python3`
-make -j8
-cp /usr/bin/gdb /usr/bin/gdb-old
-cp -rf ~/gdb-9.2/build/gdb/gdb /usr/bin/gdb
-gdb (run gdb command "show data-directory")  -> "data-directory"  # Run GDB, type the "show data-directory" command to get a data-directory path, my default here is "/usr/share/gdb"
-rm -rf $(data-directory)/python/gdb/*
-cp -rf ~/gdb-9.2/gdb/python/lib/gdb/* $(data-directory)/python/gdb/
+../configure --with-python=`which python3` --enable-targets=all
+make && make install
 ```
