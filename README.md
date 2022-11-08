@@ -86,7 +86,7 @@ x - debian-binary
 x - control.tar.zst
 x - data.tar.zst
 /home/xxx/glibc-all-in-one-master
-  -> Package saved to libs/2.35-0ubuntu3.1_amd64/.debug
+  -> Package saved to libs/2.35-0ubuntu3.1_amd64/.debug and copy the symbol files in .build-id to /usr/lib/debug/
 
 ```
 
