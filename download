@@ -8,7 +8,8 @@ if [ ! -d "debs" ];  then
     mkdir debs
 fi
 
-SOURCE="https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc"
+SOURCE="https://ubuntu.repo.cure.edu.uy/mirror/pool/main/g/glibc/"
+#SOURCE="https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc"
 # Use the source below if you feel slow, or change it on your own.
 # SOURCE="http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/"
 
@@ -21,7 +22,8 @@ die() {
 }
 
 usage() {
-  echo >&2 "Usage: $0 id"
+  echo >&2 "Usage: sudo $0 id --system  or  $0 id --no-system"
+  echo >&2 "Describe: If you need to debug a higher version of glibc with symbols, you must bring the \"--system\" parameter and need root privileges."
   exit 2
 }
 
@@ -54,10 +56,14 @@ download_single() {
 
   mkdir libs/$id/.debug
   ./extract debs/$dbg_name libs/$id/.debug
-  echo "  -> Package saved to libs/$id/.debug"
+  if [[ $2 == "--system" ]]; then
+    echo "  -> Package saved to libs/$id/.debug and copy the symbol files in .build-id to /usr/lib/debug/"
+  else
+    echo "  -> Package saved to libs/$id/.debug"
+  fi
 }
 
-if [[ $# != 1 ]]; then
+if [[ $# != 2 ]]; then
   usage
 fi
-download_single "$1"
+download_single "$1" "$2"

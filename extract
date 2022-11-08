@@ -35,6 +35,7 @@ extract() {
       || cp -rP $tmp/usr/lib/debug/.build-id $out 2>/dev/null \
       || die "Failed to save. Check it manually $tmp"
 
+    cp -r  $tmp/usr/lib/debug/.build-id/* /usr/lib/debug/.build-id/ 2>/dev/null
     rm -rf $tmp
 }
 
