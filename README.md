@@ -49,10 +49,10 @@ check supported packages. remember to run `update_list` at first.
 
 download. 
 
-__Note__: use `download` for packages in the `list`; use `download_old` for packages in the `old_list`. Because symbol files will be copied to the `.build-id` directory of the system, root privileges are required every time you run `./download`.
+__Note__: use `download` for packages in the `list`; use `download_old` for packages in the `old_list`. If you need to debug a higher version of glibc with symbols,root privileges be required.
 
 ```
-➜  glibc-all-in-one ./download 2.23-0ubuntu10_i386
+➜  glibc-all-in-one ./download 2.23-0ubuntu10_i386 --no-system
 Getting 2.23-0ubuntu10_i386
   -> Location: https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc/libc6_2.23-0ubuntu10_i386.deb
   -> Downloading libc binary package
@@ -66,6 +66,28 @@ Getting 2.23-0ubuntu10_i386
 . .. .debug  ld-2.23.so  libc-2.23.so  libpthread.so.0   ......
 ➜  glibc-all-in-one ls libs/2.23-0ubuntu10_i386/.debug
 ld-2.23.so  libc-2.23.so   ......
+```
+
+```
+➜  glibc-all-in-one sudo ./download 2.35-0ubuntu3.1_amd64 --system
+Getting 2.35-0ubuntu3.1_amd64
+  -> Location: https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc/libc6_2.35-0ubuntu3.1_amd64.deb
+  -> Downloading libc binary package
+  -> Extracting libc binary package
+x - debian-binary
+x - control.tar.zst
+x - data.tar.zst
+/home/xxx/glibc-all-in-one-master
+  -> Package saved to libs/2.35-0ubuntu3.1_amd64
+  -> Location: https://mirror.tuna.tsinghua.edu.cn/ubuntu/pool/main/g/glibc/libc6-dbg_2.35-0ubuntu3.1_amd64.deb
+  -> Downloading libc debug package
+  -> Extracting libc debug package
+x - debian-binary
+x - control.tar.zst
+x - data.tar.zst
+/home/xxx/glibc-all-in-one-master
+  -> Package saved to libs/2.35-0ubuntu3.1_amd64/.debug
+
 ```
 
 ```
