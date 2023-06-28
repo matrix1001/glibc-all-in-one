@@ -8,7 +8,7 @@ if [ ! -d "debs" ];  then
     mkdir debs
 fi
 
-SOURCE="http://old-releases.ubuntu.com/ubuntu/pool/main/g/glibc"
+SOURCE="http://mirrors.ustc.edu.cn/ubuntu-old-releases/ubuntu/pool/main/g/glibc/"
 
 LIBC_PREFIX="libc6_"
 LIBC_DBG_PREFIX="libc6-dbg_"
