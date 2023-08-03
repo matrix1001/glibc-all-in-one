@@ -24,27 +24,16 @@ check supported packages. remember to run `update_list` at first.
 2.23-0ubuntu10_amd64
 2.23-0ubuntu10_i386
 2.23-0ubuntu11_amd64
-2.23-0ubuntu11_i386
-2.23-0ubuntu3_amd64
-2.23-0ubuntu3_i386
-2.27-3ubuntu1_amd64
-2.27-3ubuntu1_i386
-2.28-0ubuntu1_amd64
-2.28-0ubuntu1_i386
 ......
 
 ➜  glibc-all-in-one cat old_list
 2.21-0ubuntu4.3_amd64
 2.21-0ubuntu4.3_amd64
 2.21-0ubuntu4_amd64
-2.21-0ubuntu4_amd64
-2.24-3ubuntu1_amd64
-2.24-3ubuntu1_amd64
-2.24-3ubuntu2.2_amd64
-2.24-3ubuntu2.2_amd64
-2.24-9ubuntu2.2_amd64
-2.24-9ubuntu2.2_amd64
 ......
+
+➜  glibc-all-in-one chmod 777 ./download_all_glibc
+➜  glibc-all-in-one ./download_all_glibc
 ```
 
 download. 
